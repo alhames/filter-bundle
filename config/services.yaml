@@ -1,0 +1,14 @@
+services:
+
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  Alhames\FilterBundle\FilterManager: ~
+  alhames_filter:
+    alias: 'Alhames\FilterBundle\FilterManager'
+    public: true
+
+  Alhames\FilterBundle\Filter\:
+    resource: '../src/Filter'

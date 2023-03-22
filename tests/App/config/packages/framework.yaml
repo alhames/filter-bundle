@@ -1,0 +1,16 @@
+framework:
+  http_method_override: false
+  handle_all_throwables: true
+  secret: 'filter-bundle-secret'
+  test: true
+  session:
+    storage_factory_id: 'session.storage.factory.mock_file'
+
+#  default_locale: '%app.locale%'
+#  translator:
+#    default_path: '%kernel.project_dir%/translations'
+#    fallbacks: ['%app.locale%']
+
+  router:
+    strict_requirements: true
+    utf8: true
