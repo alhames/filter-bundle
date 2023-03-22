@@ -42,6 +42,9 @@ abstract class AbstractFilter implements FilterInterface
 
         $config = array_merge($this->config, $config);
         $value = $this->convert($value, $config);
+        if (null === $value) {
+            return null;
+        }
 
         return $this->serialize($value, $config);
     }

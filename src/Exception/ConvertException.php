@@ -7,6 +7,7 @@ class ConvertException extends \RuntimeException implements FilterExceptionInter
     use FilterExceptionTrait;
 
     public const TYPE_COMPRESS = 'compress';
+    public const TYPE_IP = 'ip';
 
     protected const MESSAGE_TEMPLATE = 'Convertation error "%s" in "%s".';
 

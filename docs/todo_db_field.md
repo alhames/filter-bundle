@@ -82,3 +82,29 @@
         return $field;
     }
 ```
+
+## IP
+```php
+    public function getDbField(array $config): string
+    {
+        $config = array_merge($this->config, $config);
+        $field = 'INT(10) UNSIGNED';
+        if ($config['required']) {
+            $field .= ' NOT NULL';
+        } elseif (null === $config['default']) {
+            $field .=  ' NULL DEFAULT NULL';
+        } else {
+            $field .=  sprintf(" NOT NULL DEFAULT '%d'", $config['default']);
+        }
+
+        return $field;
+    }
+```
+```php
+    protected function provideGetDbField(): array
+    {
+        return [
+            ['expected' => 'INT(10) UNSIGNED NULL DEFAULT NULL'],
+        ];
+    }
+```
