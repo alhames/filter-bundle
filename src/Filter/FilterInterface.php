@@ -19,4 +19,6 @@ interface FilterInterface
     public function convertToResponse(mixed $value, array $config = []): mixed;
 
     public function filter(mixed $value, array $config = []): mixed;
+
+    public function filterRequest(mixed $value, array $config = []): mixed;
 }

@@ -19,6 +19,7 @@ class FilterValueException extends \RuntimeException implements FilterExceptionI
     public const TYPE_MAX_DATE = 'max_date';
     public const TYPE_MAX_STRING_SIZE = 'max_size';
     public const TYPE_MAX_FILE_SIZE = 'max_file_size';
+    public const TYPE_FILE = 'file';
     public const TYPE_UPLOAD = 'upload';
 
     public const TRANSLATION_DOMAIN = 'filter_errors';

@@ -79,19 +79,12 @@ abstract class AbstractFilter implements FilterInterface
             return $this->getDefaultValue($config);
         }
 
-        foreach ($config as $type => $configValue) {
-            if (null === $configValue || 'required' === $type) {
-                continue;
-            }
+        return $this->runFilters($value, $config);
+    }
 
-            $method = 'filter'.Str::convertCase($type, Str::CASE_CAMEL_UPPER);
-            if (!method_exists($this, $method)) {
-                continue;
-            }
-            $value = $this->$method($value, $config);
-        }
-
-        return $value;
+    public function filterRequest(mixed $value, array $config = []): mixed
+    {
+        return $this->filter($value, $config);
     }
 
     protected function isNull(mixed $value): bool
@@ -106,6 +99,23 @@ abstract class AbstractFilter implements FilterInterface
 
     protected function unserialize(mixed $value, array $config): mixed
     {
+        return $value;
+    }
+
+    protected function runFilters(mixed $value, array $config): mixed
+    {
+        foreach ($config as $type => $configValue) {
+            if (null === $configValue || 'required' === $type) {
+                continue;
+            }
+
+            $method = 'filter'.Str::convertCase($type, Str::CASE_CAMEL_UPPER);
+            if (!method_exists($this, $method)) {
+                continue;
+            }
+            $value = $this->$method($value, $config);
+        }
+
         return $value;
     }
 
