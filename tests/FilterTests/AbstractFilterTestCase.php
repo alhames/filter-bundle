@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 abstract class AbstractFilterTestCase extends WebTestCase
 {
-    protected const EXCEPTION = 'Error "%s" in "unknown".';
+    protected const EXCEPTION = 'Error "%s" in "%s".';
 
     public function testClass(): void
     {
@@ -97,12 +97,26 @@ abstract class AbstractFilterTestCase extends WebTestCase
     abstract protected function provideFilter(): array;
 
     /**
+     * @dataProvider provideFilterRequest
+     */
+    public function testFilterRequest(mixed $expected, mixed $value, array $config = []): void
+    {
+        $filter = $this->getFilter();
+        $this->assertSame($expected, $filter->filterRequest($value, $config));
+    }
+
+    protected function provideFilterRequest(): array
+    {
+        return $this->provideFilter();
+    }
+
+    /**
      * @dataProvider provideFilterException
      */
-    public function testFilterException(string $exceptionType, mixed $value, array $config = []): void
+    public function testFilterException(string $exceptionType, mixed $value, array $config = [], string $property = null): void
     {
         $this->expectException(FilterValueException::class);
-        $this->expectExceptionMessage(sprintf(static::EXCEPTION, $exceptionType));
+        $this->expectExceptionMessage(sprintf(static::EXCEPTION, $exceptionType, $property ?? 'unknown'));
 
         $filter = $this->getFilter();
         $filter->filter($value, $config);

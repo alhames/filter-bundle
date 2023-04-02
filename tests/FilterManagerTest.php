@@ -55,7 +55,7 @@ class FilterManagerTest extends WebTestCase
         return $this->getFixtures(__DIR__.'/fixtures/filter_request_exception.yaml');
     }
 
-    
+
 
     private function getManager(): FilterManager
     {
