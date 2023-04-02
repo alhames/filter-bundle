@@ -43,9 +43,15 @@ trait FilterExceptionTrait
         return $this->configPath;
     }
 
-    public function setConfigPath(string $path): void
+    public function prependConfigPath(string $path): static
     {
+        if ('unknown' !== $this->configPath) {
+            $path = $path.'.'.$this->configPath;
+        }
+
         $this->configPath = $path;
-        $this->message = sprintf(self::MESSAGE_TEMPLATE, $this->type, $this->configPath);
+        $this->message = sprintf(self::MESSAGE_TEMPLATE, $this->type, $path);
+
+        return $this;
     }
 }

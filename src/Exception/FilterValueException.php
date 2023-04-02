@@ -25,4 +25,9 @@ class FilterValueException extends \RuntimeException implements FilterExceptionI
     public const TRANSLATION_DOMAIN = 'filter_errors';
 
     protected const MESSAGE_TEMPLATE = 'Error "%s" in "%s".';
+
+    public function getParameters(): array
+    {
+        return [];
+    }
 }

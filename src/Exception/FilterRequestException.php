@@ -2,16 +2,18 @@
 
 namespace Alhames\FilterBundle\Exception;
 
-use Alhames\FilterBundle\Dto\Query;
-
-class FilterRequestException extends \RuntimeException
+class FilterRequestException extends \RuntimeException implements FilterExceptionInterface
 {
-    private Query $query;
+    /** @var FilterValueException[] */
+    private array $errors;
 
-    public function __construct(Query $query)
+    /**
+     * @param FilterValueException[] $errors
+     */
+    public function __construct(array $errors)
     {
         parent::__construct('Request is not valid.');
-        $this->query = $query;
+        $this->errors = $errors;
     }
 
     /**
@@ -19,6 +21,6 @@ class FilterRequestException extends \RuntimeException
      */
     public function getErrors(): array
     {
-        return $this->query->getErrors();
+        return $this->errors;
     }
 }

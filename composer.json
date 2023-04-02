@@ -18,7 +18,8 @@
     "ext-zlib": "*",
     "alhames/string": "^1.0",
     "symfony/framework-bundle": "^6.0",
-    "symfony/yaml": "^6.0"
+    "symfony/yaml": "^6.0",
+    "symfony/translation": "^6.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^9.5",

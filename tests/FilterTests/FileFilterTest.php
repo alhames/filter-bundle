@@ -156,7 +156,6 @@ class FileFilterTest extends AbstractFilterTestCase
         return [
             'type_stdclass_exception' => ['exception_type' => FilterValueException::TYPE_TYPE, 'value' => new \stdClass()],
             'type_datetime_exception' => ['exception_type' => FilterValueException::TYPE_TYPE, 'value' => new \DateTime()],
-            'type_string_exception' => ['exception_type' => FilterValueException::TYPE_TYPE, 'value' => 'string'],
 
             'required_null_exception' => [
                 'exception_type' => FilterValueException::TYPE_REQUIRED,
@@ -169,6 +168,7 @@ class FileFilterTest extends AbstractFilterTestCase
                 'config' => ['required' => true],
             ],
 
+            'file_string_exception' => ['exception_type' => FilterValueException::TYPE_FILE, 'value' => 'string'],
             'file_string1_exception' => [
                 'exception_type' => FilterValueException::TYPE_FILE,
                 'value' => '/tmp/test.txt',

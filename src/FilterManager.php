@@ -2,7 +2,7 @@
 
 namespace Alhames\FilterBundle;
 
-use Alhames\FilterBundle\Dto\Query;
+use Alhames\FilterBundle\Exception\FilterRequestException;
 use Alhames\FilterBundle\Exception\FilterValueException;
 use Alhames\FilterBundle\Filter\FilterInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -40,7 +40,11 @@ class FilterManager
         return $request->attributes->getBoolean($this->config['api_parameter']);
     }
 
-    public function filterRequest(Request $request, array $config): Query
+    /**
+     * @throws MethodNotAllowedHttpException
+     * @throws FilterRequestException
+     */
+    public function filterRequest(Request $request, array $config): array
     {
         if ($request->isMethod(Request::METHOD_GET)) {
             $queryBag = $request->query;
@@ -64,12 +68,14 @@ class FilterManager
             try {
                 $data[$key] = $filter->filterRequest($value, $itemConfig);
             } catch (FilterValueException $e) {
-                $e->setConfigPath($key);
-                $data[$key] = $filter->getDefaultValue($itemConfig);
-                $errors[$key] = $e;
+                $errors[$key] = $e->prependConfigPath($key);
             }
         }
 
-        return new Query($data, $errors);
+        if (!empty($errors)) {
+            throw new FilterRequestException($errors);
+        }
+
+        return $data;
     }
 }

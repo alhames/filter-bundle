@@ -2,12 +2,11 @@
 
 namespace Alhames\FilterBundle\EventListener;
 
-use Alhames\FilterBundle\Exception\FilterRequestException;
 use Alhames\FilterBundle\FilterManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 
-class RequestListener implements EventSubscriberInterface
+class ApiRequestListener implements EventSubscriberInterface
 {
     private FilterManager $manager;
 
@@ -30,6 +29,10 @@ class RequestListener implements EventSubscriberInterface
         }
 
         $request = $event->getRequest();
+        if (!$this->manager->isApi($request)) {
+            return;
+        }
+
         $key = $this->manager->getConfig('request_parameter');
         if (!$request->attributes->has($key)) {
             return;
@@ -38,9 +41,5 @@ class RequestListener implements EventSubscriberInterface
         $config = $request->attributes->get($key);
         $query = $this->manager->filterRequest($request, $config);
         $request->attributes->set($this->manager->getConfig('query_parameter'), $query);
-
-        if ($this->manager->isApi($request) && !$query->isValid()) {
-            throw new FilterRequestException($query);
-        }
     }
 }

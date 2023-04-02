@@ -7,7 +7,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 
-class ViewListener implements EventSubscriberInterface
+class ApiViewListener implements EventSubscriberInterface
 {
     private FilterManager $manager;
 

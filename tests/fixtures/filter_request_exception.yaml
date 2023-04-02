@@ -1,0 +1,11 @@
+simple_get_request:
+  expected:
+    count: 'Error "min" in "count".'
+  request:
+    method: 'GET'
+    parameters:
+      count: '100'
+  config:
+    count:
+      type: 'integer'
+      min: 1000
