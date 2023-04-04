@@ -22,6 +22,10 @@ class FilterManager
 
     public function getFilter(string $type): FilterInterface
     {
+        if (!isset($this->filters[$type])) {
+            throw new \LogicException(sprintf('Unknown filter type "%s".', $type)); // todo
+        }
+
         return $this->filters[$type];
     }
 
@@ -62,7 +66,7 @@ class FilterManager
         $data = [];
         $errors = [];
         foreach ($config as $key => $itemConfig) {
-            $filter = $this->filters[$itemConfig['type']];
+            $filter = $this->getFilter($itemConfig['type']);
             $value = $filter->isFile($itemConfig) ? $request->files->get($key) : $queryBag->get($key);
 
             try {
@@ -77,5 +81,43 @@ class FilterManager
         }
 
         return $data;
+    }
+
+    public function convertFromDb(array $data, array $config): array
+    {
+        $result = [];
+        foreach ($config as $key => $itemConfig) {
+            if ($itemConfig['external'] ?? false) {
+                continue;
+            }
+
+            $filter = $this->getFilter($itemConfig['type']);
+            if (array_key_exists($key, $data)) {
+                $result[$key] = $filter->convertFromDb($data[$key], $config);
+            } else {
+                $result[$key] = $filter->getDefaultValue($itemConfig);
+            }
+        }
+
+        return $result;
+    }
+
+    public function convertToDb(array $data, array $config): array
+    {
+        $result = [];
+        foreach ($data as $key => $value) {
+            if (!isset($config[$key])) {
+                continue;
+            }
+
+            $itemConfig = $config[$key];
+            if ($itemConfig['external'] ?? false) {
+                continue;
+            }
+
+            $result[$key] = $this->getFilter($itemConfig['type'])->convertToDb($value, $itemConfig);
+        }
+
+        return $result;
     }
 }
