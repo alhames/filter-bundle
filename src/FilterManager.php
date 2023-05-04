@@ -93,7 +93,7 @@ class FilterManager
 
             $filter = $this->getFilter($itemConfig['type']);
             if (array_key_exists($key, $data)) {
-                $result[$key] = $filter->convertFromDb($data[$key], $config);
+                $result[$key] = $filter->convertFromDb($data[$key], $itemConfig);
             } else {
                 $result[$key] = $filter->getDefaultValue($itemConfig);
             }
