@@ -12,3 +12,10 @@ services:
 
   Alhames\FilterBundle\Filter\:
     resource: '../src/Filter'
+
+  Alhames\FilterBundle\EventListener\ApiExceptionListener:
+    tags: ['kernel.event_subscriber']
+  Alhames\FilterBundle\EventListener\ApiRequestListener:
+    tags: ['kernel.event_subscriber']
+  Alhames\FilterBundle\EventListener\ApiViewListener:
+    tags: ['kernel.event_subscriber']
