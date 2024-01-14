@@ -74,6 +74,16 @@ class ObjectFilter extends AbstractCompressibleFilter
         return $this->handleInternal('filter', $value, $config);
     }
 
+    public function convertToResponse(mixed $value, array $config = []): mixed
+    {
+        $value = $this->normalize($value);
+        if (null === $value) {
+            return null;
+        }
+
+        return $this->handleInternal('convertToResponse', $value, $config);
+    }
+
     public function convert(mixed $value, array $config = []): mixed
     {
         $value = $this->normalize($value);
