@@ -51,13 +51,13 @@ class FilterManager
     public function filterRequest(Request $request, array $config): array
     {
         if ($request->isMethod(Request::METHOD_GET)) {
-            $queryBag = $request->query;
+            $values = $request->query->all();
         } elseif ($request->isMethod(Request::METHOD_POST)) {
             if ('json' === $request->getContentTypeFormat()) {
                 $json = $request->getContent();
-                $queryBag = new ParameterBag('' !== $json ? \json_decode($json, true) : []);
+                $values = '' !== $json ? \json_decode($json, true) : [];
             } else {
-                $queryBag = $request->request;
+                $values = $request->request->all();
             }
         } else {
             throw new MethodNotAllowedHttpException([Request::METHOD_GET, Request::METHOD_POST], sprintf('Method "%s" is not supported.', $request->getMethod()));
@@ -67,7 +67,7 @@ class FilterManager
         $errors = [];
         foreach ($config as $key => $itemConfig) {
             $filter = $this->getFilter($itemConfig['type']);
-            $value = $filter->isFile($itemConfig) ? $request->files->get($key) : $queryBag->get($key);
+            $value = $filter->isFile($itemConfig) ? $request->files->get($key) : $values[$key];
 
             try {
                 $data[$key] = $filter->filterRequest($value, $itemConfig);
